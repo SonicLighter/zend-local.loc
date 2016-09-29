@@ -116,3 +116,56 @@ it should look something like below:
     }
 
 Restart the nginx, now you should be ready to go!
+
+### Getting started
+
+1. Zend Developer Tools:
+~~~
+composer:
+"zendframework/zend-developer-tools": "dev-master",
+config/application.config.php:
+    'modules' => array(
+        'Application',
+        'ZendDeveloperTools',
+        'DoctrineModule',       // ADD THIS TO ARRAY
+        'DoctrineORMModule',    // AND THIS
+    ),
+~~~
+
+2. Install Doctrine ORM, to do that you need to add following strings to composer.json, and then composer update:
+
+~~~
+"doctrine/common": ">=2.1",
+"doctrine/doctrine-orm-module": "0.7.*"
+~~~
+
+After that create doctrine.local.php file in config/autoload:
+~~~
+<?php
+return array(
+    'doctrine' => array(
+        'connection' => array(
+            'orm_default' => array(
+                'driverClass' =>'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'params' => array(
+                    'host'     => 'localhost',
+                    'port'     => '3306',
+                    'user'     => 'username',
+                    'password' => 'pass',
+                    'dbname'   => 'dbname',
+                )
+            )
+        ),
+    ),
+);
+~~~
+
+3. ZendTool to install code generator:
+
+~~~
+"zendframework/zftool": "dev-master"
+~~~
+Edit array in config/application.config.php, add:
+~~~
+'ZFTool'
+~~~
