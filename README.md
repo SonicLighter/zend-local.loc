@@ -160,6 +160,13 @@ return array(
 );
 ~~~
 
+Doctrine commands:
+~~~
+./vendor/bin/doctrine-module orm:info - mapped entities
+./vendor/bin/doctrine-module orm:schema-tool:update --force // to create a new table for example
+./vendor/bin/doctrine-module orm:validate-schema
+~~~
+
 3. ZendTool to install code generator:
 
 ~~~
