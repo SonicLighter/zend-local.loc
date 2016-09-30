@@ -5,6 +5,7 @@ namespace MyBlog\Form;
 use Zend\Form\Form;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
+use \MyBlog\Form\BlogPostInputFilter;
 
 class BlogPostForm extends Form{
 
@@ -14,7 +15,7 @@ class BlogPostForm extends Form{
         parent::__construct('blogpost');
         $this->setAttribute('method', 'post');
 
-        //$this->setInputFilter(new \MyBlog\Form\BlogPostInputFilter());
+        $this->setInputFilter(new BlogPostInputFilter());
         $this->add(array(
             'name' => 'security',
             'type' => 'Zend\Form\Element\Csrf',
