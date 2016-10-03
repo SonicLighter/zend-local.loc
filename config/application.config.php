@@ -13,6 +13,7 @@ return array(
         'DoctrineORMModule',
         'ZFTool',
         'MyBlog',
+        'AuthDoctrine',
     ),
     'module_listener_options' => array(
         'module_paths' => array(

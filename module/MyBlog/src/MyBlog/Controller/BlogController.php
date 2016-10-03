@@ -21,9 +21,14 @@ class BlogController extends AbstractActionController{
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setData($request->getPost());
 
+            $form->setData($request->getPost());
+            //echo 'hi';
+            //var_dump($request->getPost());
+            //die();
             if ($form->isValid()) {
+                //echo 'validation';
+                //die();
                 $objectManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
 
                 $blogpost = new BlogPost();
@@ -37,7 +42,7 @@ class BlogController extends AbstractActionController{
                 $objectManager->flush();
 
                 // Redirect to list of blogposts
-                return $this->redirect()->toRoute('blog');
+                //return $this->redirect()->toRoute('blog');
             }
         }
         return array('form' => $form);
