@@ -1,50 +1,3 @@
-<!--
-
-<?php
-
-?>
-<?php echo $this->messages; ?>
-
-<?php
-
-    $form = $this->form;
-    $form->prepare();
-
-    echo $this->form()->openTag($form);
-    echo $this->formRow($form->get('user_name'));
-    echo $this->formRow($form->get('user_password'));
-    echo $this->formRow($form->get('rememberme'));
-    echo $this->formSubmit($form->get('submit'));
-    echo $this->form()->closeTag();
-
-?>
-
-<?php
-    try {
-        if($user = $this->identity()) {
-            echo 'Авторизован как: ' . $this->escapeHtml($user->getUserName()).'<br/>';
-            ?>
-            <br>
-            <a href="<?php echo $this->url('auth-doctrine/default', array('controller' => 'index', 'action' => 'logout')); ?>">
-                Выход
-            </a>
-            <?php
-        }
-        else{
-            echo 'Вход не выполнен!';
-        }
-    }
-    catch(Exception $e){
-        //echo $e->getMessage();
-    }
-?>
-<br/>
-<a href="<?php echo $this->url('auth-doctrine/default', array('controller' => 'index', 'action' => 'register')); ?>">
-    Регистрация
-</a>
-
--->
-
 <?php
     echo $this->headLink()->appendStylesheet('/css/login.css');
     $this->headTitle('Login');
@@ -61,10 +14,10 @@
         <?php $this->form->prepare(); ?>
 
         <div class="loginBlock">
-            <?php echo $this->messages; ?>
             <?= $this->form()->openTag($this->form) ?>
             <?= $this->formRow($form->get('user_name')) ?><br/>
             <?= $this->formRow($form->get('user_password')) ?><br/>
+            <div class="errorMessage"><?php echo $this->messages; ?></div>
             <div class="checkbox">
                 <label>
                     <?= $this->formRow($form->get('rememberme')) ?>

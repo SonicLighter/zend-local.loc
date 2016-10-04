@@ -3,15 +3,24 @@
 namespace AuthDoctrine\Controller;
 
 use AuthDoctrine\Form\LoginFilter;
+use AuthDoctrine\Form\RegistrationForm;
+use DoctrineORMModuleTest\Assets\GraphEntity\User;
 use Zend\Mvc\Controller\AbstractActionController;
 use MyBlog\Entity\Users;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Application\Controller\BaseController;
 use Zend\View\Model\ViewModel;
 use AuthDoctrine\Form\LoginForm;
+use Zend\Session\SessionManager;
+use AuthDoctrine\Form\RegistrationFilter;
+
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use DoctrineORMModule\Stdlib\Hydrator\DoctrineEntity;
+use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
 
 class IndexController extends BaseController{
+
+    const SESSION_TIME = 1209600;
 
     public function indexAction()
     {
@@ -28,6 +37,43 @@ class IndexController extends BaseController{
             )
         );
 
+    }
+
+    public function registerAction(){
+
+        $em = $this->getEntityManager();
+
+        $user = new Users();
+        $form = new RegistrationForm();
+        $form->setHydrator(new DoctrineHydrator($em, 'MyBlog\Entity\Users'));
+        $form->bind($user);
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $this->prepareData($user);
+                //$this->sendConfirmationEmail($user);
+                //$this->flashMessenger()->addMessage($user->getUsrEmail());
+                $em->persist($user);
+                $em->flush();
+                return $this->redirect()->toRoute('auth-doctrine/default', array('controller'=>'index', 'action'=>'login'));
+            }
+        }
+        return new ViewModel(array('form' => $form));
+
+    }
+
+    public function prepareData($user)
+    {
+        $user->setUserPassword($user->getUserPassword());
+        //$user->setUsrlId(2);
+        //$user->setLngId(1);
+        //$user->setUsrRegistrationDate(new \DateTime());
+        //$user->setUsrRegistrationToken(md5(uniqid(mt_rand(), true))); // $this->generateDynamicSalt();
+//		$user->setUsrRegistrationToken(uniqid(php_uname('n'), true));
+        //$user->setUsrEmailConfirmed(0);
+        return $user;
     }
 
     public function loginAction(){
@@ -50,15 +96,19 @@ class IndexController extends BaseController{
                 if($authResult->isValid()){
                     $identity = $authResult->getIdentity();
                     $authService->getStorage()->write($identity);
-                    $time = 1209600; // 2 weeks
+                    $time = self::SESSION_TIME; // 2 weeks
                     if($data['rememberme']){
                         $sessionManager = new \Zend\Session\SessionManager();
                         $sessionManager->rememberMe($time);
                     }
+                    return $this->redirect()->toRoute('home');
                 }
+                /*
                 foreach($authResult->getMessages() as $message){
                     $messages .= $message."\n";
                 }
+                */
+                $messages = 'Incorrect username or password!';
             }
         }
 
@@ -69,70 +119,18 @@ class IndexController extends BaseController{
 
     }
 
-    /*
-    public function getUserForm(Users $user){
+    public function logoutAction(){
 
-        $builder = new AnnotationBuilder($this->getEntityManager());
-        $form = $builder->createForm('\MyBlog\Entity\Users');
-        $form->setHydrator(new DoctrineHydrator($this->getEntityManager(),'\Users'));
-        $form->bind($user);
-
-        return $form;
-
-    }
-
-    public function getLoginForm(Users $user){
-
-        $form = $this->getUserForm($user);
-        $form->setAttribute('action', '/auth-doctrine/index/login/');
-        $form->setValidationGroup('user_name', 'user_password');
-
-        return $form;
-
-    }
-
-    public function loginAction(){
-
-        $em = $this->getEntityManager();
-        $user = new Users();
-        $form = $this->getLoginForm($user);
-
-        $messages = null;
-        $request = $this->getRequest();
-
-        if($request->isPost()){
-            $form->setData($request->getPost());
-            if($form->isValid()){
-                $user = $form->getData();
-                $authResult = $em->getRepository('MyBlog\Entity\Users')->login($user, $this->getServiceLocator());
-                if($authResult->getCode() != \Zend\Authentication\Result::SUCCESS){
-                    foreach($authResult->getMessages() as $message){
-                        $messages .= "$message\n";
-                    }
-                }
-                else{
-                    return array(
-
-                    );
-                }
-            }
+        $auth = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
+        if($auth->hasIdentity()){
+            $identity = $auth->getIdentity();
         }
+        $auth->clearIdentity();
+        $sessionManager = new SessionManager();
+        $sessionManager->forgetMe();
 
-        return array(
-            'form' => $form,
-            'messages' => $messages,
-        );
+        return $this->redirect()->toRoute('auth-doctrine/default', array('controller' => 'index', 'action' => 'login'));
 
     }
-
-    public function indexAction()
-    {
-        $entity = $this->getEntityManager();
-        $users = $entity->getRepository('MyBlog\Entity\Users')->findAll();
-        return array(
-            'users' => $users,
-        );
-    }
-    */
 
 }
