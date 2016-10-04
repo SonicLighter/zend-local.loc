@@ -3,12 +3,14 @@
 namespace MyBlog\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zend\Form\Annotation;
 
 /**
  * Users
  *
  * @ORM\Table(name="users")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="MyBlog\Entity\Repository\UsersRepository")
+ * @Annotation\Name("users")
  */
 class Users
 {
@@ -18,6 +20,7 @@ class Users
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Annotation\Exclude()
      */
     private $id;
 
@@ -25,6 +28,12 @@ class Users
      * @var string
      *
      * @ORM\Column(name="user_name", type="string", length=100, nullable=false)
+     * @Annotation\Filter({"name":"StringTrim"})
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Attributes({"type":"text", "class":"form-control", "required":"required"})
+     * @Annotation\Required({"required":"true"})
+     * @Annotation\Options({"label":"Логин:"})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":1, "max":30}})
      */
     private $userName;
 
@@ -32,6 +41,11 @@ class Users
      * @var string
      *
      * @ORM\Column(name="user_password", type="string", length=300, nullable=false)
+     * @Annotation\Attributes({"type":"password", "class":"form-control", "required":"required"})
+     * @Annotation\Options({"label":"Пароль:"})
+     * @Annotation\Filter({"name":"StringTrim"})
+     * @Annotation\Required({"required":"true"})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":1, "max":30}})
      */
     private $userPassword;
 
@@ -39,10 +53,14 @@ class Users
      * @var string
      *
      * @ORM\Column(name="user_email", type="string", length=60, nullable=false)
+     * @Annotation\Type("Zend\Form\Element\Email")
+     * @Annotation\Attributes({"class":"form-control", "required":"required"})
+     * @Annotation\Options({"label":"Email:"})
+     * @Annotation\Filter({"name":"StringTrim"})
+     * @Annotation\Required({"required":"true"})
+     * @Annotation\Validator({"name":"EmailAddress"})
      */
     private $userEmail;
-
-
 
     /**
      * Get id
