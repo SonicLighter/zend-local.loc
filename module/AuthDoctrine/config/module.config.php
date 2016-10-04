@@ -2,6 +2,8 @@
 
 namespace AuthDoctrine;
 
+use MyBlog\Entity\Users;
+
 return array(
     'controllers' => array(
         'invokables' => array(
@@ -47,6 +49,46 @@ return array(
             __DIR__ . '/../view',
         ),
         'display_exceptions' => true,
+    ),
+
+
+
+    'doctrine' => array(
+        'authentication' => array(
+            'orm_default' => array(
+                'object_manager' => 'Doctrine\ORM\EntityManager',
+                'identity_class' => 'MyBlog\Entity\Users',
+                'identity_property' => 'userName',
+                'credential_property' => 'userPassword',
+                'credential_callable' => function(Users $user, $passwordGiven) {
+                    if ($user->getUserPassword() == $passwordGiven){
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                },
+            ),
+        ),
+
+        /*
+        'driver' => array(
+
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity',
+                ),
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver',
+                )
+            )
+        ),
+        */
+
     ),
 
 );

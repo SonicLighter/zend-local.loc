@@ -1,3 +1,5 @@
+<!--
+
 <?php
 
 ?>
@@ -11,6 +13,7 @@
     echo $this->form()->openTag($form);
     echo $this->formRow($form->get('user_name'));
     echo $this->formRow($form->get('user_password'));
+    echo $this->formRow($form->get('rememberme'));
     echo $this->formSubmit($form->get('submit'));
     echo $this->form()->closeTag();
 
@@ -39,3 +42,39 @@
 <a href="<?php echo $this->url('auth-doctrine/default', array('controller' => 'index', 'action' => 'register')); ?>">
     Регистрация
 </a>
+
+-->
+
+<?php
+    echo $this->headLink()->appendStylesheet('/css/login.css');
+    $this->headTitle('Login');
+    //if(empty($this->identity())){
+    //    echo 'empty<br/>';
+    //}
+    //echo $this->identity()->getUserName();
+?>
+<div class="container">
+    <div class="row">
+
+        <h1><?= $this->escapeHtml('Login Page') ?></h1>
+
+        <?php $this->form->prepare(); ?>
+
+        <div class="loginBlock">
+            <?php echo $this->messages; ?>
+            <?= $this->form()->openTag($this->form) ?>
+            <?= $this->formRow($form->get('user_name')) ?><br/>
+            <?= $this->formRow($form->get('user_password')) ?><br/>
+            <div class="checkbox">
+                <label>
+                    <?= $this->formRow($form->get('rememberme')) ?>
+                    Remember me
+                </label>
+            </div>
+            <?= $this->formSubmit($form->get('submit')) ?>
+            <?= $this->form()->closeTag() ?>
+
+        </div>
+
+    </div>
+</div>

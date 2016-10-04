@@ -22,8 +22,10 @@ class LoginFilter extends InputFilter{
                     'options' => array(
                         'min' => 3,
                         'max' => 20,
+                        'message' => 'Username should be between 3 and 20 characters long!',
                     ),
                 ),
+                /*
                 array(
                     'name' => 'DoctrineModule\Validator\ObjectExists',
                     'options' => array(
@@ -31,6 +33,7 @@ class LoginFilter extends InputFilter{
                         'fields' => 'user_name',
                     ),
                 ),
+                */
             ),
         ));
 
@@ -47,6 +50,7 @@ class LoginFilter extends InputFilter{
                     'options' => array(
                         'min'      => 6,
                         'max'      => 12,
+                        'message' => 'Password should be between 6 and 12 characters long!',
                     ),
                 ),
             ),

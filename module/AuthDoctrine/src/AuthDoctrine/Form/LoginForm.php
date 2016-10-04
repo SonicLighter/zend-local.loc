@@ -3,6 +3,7 @@
 namespace AuthDoctrine\Form;
 
 use Zend\Form\Form;
+use Zend\Form\Element;
 
 class LoginForm extends Form{
 
@@ -15,9 +16,12 @@ class LoginForm extends Form{
             'name' => 'user_name',
             'attributes' => array(
                 'type' => 'text',
+                'class' => 'form-control',
+                'placeholder' => 'Username',
+                'id' => 'inputLogin',
             ),
             'options' => array(
-                'label' => 'Username',
+                'label' => '',
             ),
         ));
 
@@ -25,21 +29,36 @@ class LoginForm extends Form{
             'name' => 'user_password',
             'attributes' => array(
                 'type' => 'password',
+                'class' => 'form-control',
+                'placeholder' => 'Password',
             ),
             'options' => array(
-                'label' => 'Password',
+                'label' => '',
             ),
         ));
 
         $this->add(array(
+            'type' => 'Zend\Form\Element\Checkbox',
+            'name' => 'rememberme',
+            'options' => array(
+                'label' => '',
+                'use_hidden_element' => true,
+                'checked_value' => 'good',
+                'unchecked_value' => 'bad'
+            )
+        ));
+
+        /*
+        $this->add(array(
             'name' => 'rememberme',
             'attributes' => array(
-                'type' => 'checkbox',
+                'type' => 'Zend\Form\Element\Checkbox',
             ),
             'options' => array(
                 'label' => 'Remember me?',
             ),
         ));
+        */
 
         $this->add(array(
             'name' => 'submit',
@@ -47,6 +66,7 @@ class LoginForm extends Form{
                 'type' => 'submit',
                 'value' => 'Login',
                 'id' => 'loginSubmit',
+                'class' => 'btn btn-default',
             ),
             'options' => array(
                 'label' => 'Password',

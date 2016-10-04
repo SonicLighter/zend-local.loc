@@ -32,7 +32,7 @@ class IndexController extends BaseController{
 
     public function loginAction(){
 
-        $form = new LoginForm('123');
+        $form = new LoginForm();
         //$form->get('submit')->setValue('Login');
         $messages = null;
 
@@ -42,7 +42,23 @@ class IndexController extends BaseController{
             $form->setData($request->getPost());
             if($form->isValid()){
                 $data = $form->getData();
-                $authService = $this->getServiceLocator()->get('Zend\Authentication\')
+                $authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
+                $adapter = $authService->getAdapter();
+                $adapter->setIdentityValue($data['user_name']);
+                $adapter->setCredentialValue($data['user_password']);
+                $authResult = $authService->authenticate();
+                if($authResult->isValid()){
+                    $identity = $authResult->getIdentity();
+                    $authService->getStorage()->write($identity);
+                    $time = 1209600; // 2 weeks
+                    if($data['rememberme']){
+                        $sessionManager = new \Zend\Session\SessionManager();
+                        $sessionManager->rememberMe($time);
+                    }
+                }
+                foreach($authResult->getMessages() as $message){
+                    $messages .= $message."\n";
+                }
             }
         }
 
