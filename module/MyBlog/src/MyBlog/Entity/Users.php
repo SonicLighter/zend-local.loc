@@ -62,6 +62,36 @@ class Users
      */
     private $userEmail;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_full_name", type="string", length=100, nullable=false)
+     * @Annotation\Filter({"name":"StringTrim"})
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Attributes({"type":"text", "class":"form-control", "required":"required"})
+     * @Annotation\Required({"required":"true"})
+     * @Annotation\Options({"label":"Полное имя:"})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":1, "max":30}})
+     */
+    private $userFullName;
+
+    /**
+     * @return string
+     */
+    public function getUserFullName()
+    {
+        return $this->userFullName;
+    }
+
+    /**
+     * @param string $userFullName
+     */
+    public function setUserFullName($userFullName)
+    {
+        $this->userFullName = $userFullName;
+    }
+
     /**
      * Get id
      *

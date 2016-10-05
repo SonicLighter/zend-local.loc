@@ -68,6 +68,7 @@ class RegistrationController extends BaseController
         $user->setUserName($data['user_name']);
         $user->setUserPassword(hash('sha256', $data['user_password']));
         $user->setUserEmail($data['user_email']);
+        $user->setUserFullName($data['user_fullname']);
 
         return $user;
 

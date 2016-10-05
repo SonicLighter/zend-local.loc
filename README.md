@@ -160,13 +160,6 @@ return array(
 );
 ~~~
 
-Doctrine commands:
-~~~
-./vendor/bin/doctrine-module orm:info - mapped entities
-./vendor/bin/doctrine-module orm:schema-tool:update --force // to create a new table for example
-./vendor/bin/doctrine-module orm:validate-schema
-~~~
-
 3. ZendTool to install code generator:
 
 ~~~
@@ -176,3 +169,9 @@ Edit array in config/application.config.php, add:
 ~~~
 'ZFTool'
 ~~~
+
+4. Doctrine commands:
+> Update your entity model, and then execute following commands.
+> ./vendor/bin/doctrine-module orm:info - to get info about Entities
+> ./vendor/bin/doctrine-module orm:schema-tool:update --force - to update database
+> ./vendor/bin/doctrine-module orm:validate-schema - check validation
