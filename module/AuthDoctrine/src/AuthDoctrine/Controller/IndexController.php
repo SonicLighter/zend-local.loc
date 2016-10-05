@@ -39,8 +39,34 @@ class IndexController extends BaseController{
 
     }
 
+    // now registration in RegistrationController
     public function registerAction(){
 
+        $form = new RegistrationForm();
+
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            $form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
+            $form->setData($request->getPost());
+
+            $apiService = $this->getServiceLocator()->get('AuthDoctrine\Service\IsExistValidator');
+
+            if($form->isValid()){
+
+                $data = $form->getData();
+                echo 'hello';
+                die();
+
+            }
+
+        }
+
+        return new ViewModel(array(
+            'form' => $form,
+        ));
+
+        /*
         $em = $this->getEntityManager();
 
         $user = new Users();
@@ -61,6 +87,7 @@ class IndexController extends BaseController{
             }
         }
         return new ViewModel(array('form' => $form));
+        */
 
     }
 

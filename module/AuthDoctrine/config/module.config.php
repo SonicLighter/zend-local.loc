@@ -62,7 +62,7 @@ return array(
                 'identity_property' => 'userName',
                 'credential_property' => 'userPassword',
                 'credential_callable' => function(Users $user, $passwordGiven) {
-                    if ($user->getUserPassword() == $passwordGiven){
+                    if ($user->getUserPassword() == hash('sha256', $passwordGiven)){
                         return true;
                     }
                     else {

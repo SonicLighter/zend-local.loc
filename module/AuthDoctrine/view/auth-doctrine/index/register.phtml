@@ -1,11 +1,26 @@
+<?php echo $this->headLink()->appendStylesheet('/css/login.css'); ?>
 <?php $this->headTitle('Registration') ?>
 <div class="container">
     <div class="row">
 
-        <h1><?= $this->escapeHtml('Registration Page') ?></h1><br/>
+        <?php $this->form->prepare(); ?>
+        <h1><?= $this->escapeHtml('Registration Page') ?></h1>
         <div class="loginBlock">
-            Hello
+            <?= $this->form()->openTag($this->form) ?>
+            <?= $this->formRow($form->get('user_name')) ?><br/>
+            <?= $this->formRow($form->get('user_password')) ?><br/>
+            <?= $this->formRow($form->get('user_email')) ?><br/>
+            <?= $this->formRow($form->get('user_fullname')) ?><br/>
         </div>
+        <div class="verifyBlock">
+            <?= $this->formRow($form->get('captcha')) ?><br/>
+        </div>
+        <div class="loginBlock">
+            <div class="errorMessage"><?php echo $this->messages; ?></div>
+            <?= $this->formSubmit($form->get('submit')) ?>
+            <?= $this->form()->closeTag() ?>
+        </div>
+
 
     </div>
 </div>

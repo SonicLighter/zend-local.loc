@@ -22,7 +22,10 @@ class RegistrationController extends BaseController
     public function indexAction()
     {
 
+        $this->flashMessenger()->clearMessages();
+        //$message = null;
         $form = new RegistrationForm();
+        $em = $this->getEntityManager();
 
         $request = $this->getRequest();
         if($request->isPost()){
@@ -30,21 +33,43 @@ class RegistrationController extends BaseController
             $form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
             $form->setData($request->getPost());
 
-            //$apiService = $this->getServiceLocator()->get('MyBlog\Entity\Users');
+            $apiService = $this->getServiceLocator()->get('AuthDoctrine\Service\IsExistValidator');
 
             if($form->isValid()){
+                $user = $this->prepareData($form->getData());
+                if($apiService->exists($user->getUserName(), array('userName'))){
+                    //$message = 'User with such username already exists!';
+                    $this->flashMessenger()->addErrorMessage('User with such username already exists!');
+                }
+                else{
+                    $em->persist($user);
+                    $em->flush();
+                    return $this->redirect()->toRoute('auth-doctrine/default', array('controller' => 'index', 'action' => 'login'));
+                }
 
-                $data = $form->getData();
-                echo 'Hello';
+                /*
+                echo 'hsad';
                 die();
-
+                */
             }
 
         }
 
         return new ViewModel(array(
             'form' => $form,
+            //'message' => $message,
         ));
+
+    }
+
+    public function prepareData($data){
+
+        $user = new Users();
+        $user->setUserName($data['user_name']);
+        $user->setUserPassword(hash('sha256', $data['user_password']));
+        $user->setUserEmail($data['user_email']);
+
+        return $user;
 
     }
 
