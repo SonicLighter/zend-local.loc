@@ -17,6 +17,8 @@ class RegistrationForm extends Form
             'name' => 'user_name',
             'attributes' => array(
                 'type'  => 'text',
+                'class' => 'form-control',
+                'placeholder' => 'Username (login)',
             ),
             'options' => array(
                 'label' => '',
@@ -27,6 +29,8 @@ class RegistrationForm extends Form
             'name' => 'user_email',
             'attributes' => array(
                 'type'  => 'email',
+                'class' => 'form-control',
+                'placeholder' => 'Email',
             ),
             'options' => array(
                 'label' => '',
@@ -37,9 +41,23 @@ class RegistrationForm extends Form
             'name' => 'user_password',
             'attributes' => array(
                 'type'  => 'password',
+                'class' => 'form-control',
+                'placeholder' => 'Password',
             ),
             'options' => array(
-                'label' => 'Password',
+                'label' => '',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'user_fullname',
+            'attributes' => array(
+                'type'  => 'text',
+                'class' => 'form-control',
+                'placeholder' => 'Enter your full name',
+            ),
+            'options' => array(
+                'label' => '',
             ),
         ));
 
@@ -68,6 +86,7 @@ class RegistrationForm extends Form
             'name' => 'submit',
             'attributes' => array(
                 'type'  => 'submit',
+                'class' => 'btn btn-default',
                 'value' => 'Register',
                 'id' => 'submitbutton',
             ),

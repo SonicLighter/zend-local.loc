@@ -8,6 +8,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'AuthDoctrine\Controller\Index' => 'AuthDoctrine\Controller\IndexController',
+            'AuthDoctrine\Controller\Registration' => 'AuthDoctrine\Controller\RegistrationController',
         ),
     ),
     'router' => array(

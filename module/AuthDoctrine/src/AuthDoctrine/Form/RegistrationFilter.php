@@ -58,6 +58,25 @@ class RegistrationFilter extends InputFilter
             ),
         ));
 
+        $this->add(array(
+            'name'     => 'user_fullname',
+            'required' => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name' => 'StringLength',
+                    'options' => array(
+                        'min' => 3,
+                        'max' => 20,
+                        'message' => 'Username should be between 3 and 20 characters long!',
+                    ),
+                ),
+            ),
+        ));
+
         /*
         $this->add(array(
             'name'     => 'usrPasswordConfirm',
