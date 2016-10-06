@@ -1,0 +1,65 @@
+<?php
+/*
+echo '<h1>Hello Admin</h1>';
+foreach($users as $user){
+    echo '<br/>Username: '.$user->getUserName();
+}
+*/
+?>
+
+<?php echo $this->headLink()->appendStylesheet('/css/login.css'); ?>
+<?php $this->headTitle('AdminCenter') ?>
+<div class="container">
+    <div class="row">
+
+        <h1><?= $this->escapeHtml('Users') ?></h1><br/>
+
+        <table id="userTable" class="table table-striped table-hover table-bordered">
+            <tbody>
+
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Full name
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Username
+                    </th>
+                    <th>
+                        Options
+                    </th>
+                </tr>
+
+                <?php foreach($users as $user): ?>
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td>
+                            <?= $user->getUserFullName() ?>
+                        </td>
+                        <td>
+                            <?= $user->getUserEmail() ?>
+                        </td>
+                        <td>
+                            <?= $user->getUserName() ?>
+                        </td>
+                        <td>
+                            <a href="#"><span class="glyphicon glyphicon-edit"></span></a>&nbsp;
+                            <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+                        </td>
+                    </tr>
+                <? endforeach ?>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
