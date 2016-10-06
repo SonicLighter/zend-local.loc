@@ -13,48 +13,51 @@ foreach($users as $user){
     <div class="row">
 
         <h1><?= $this->escapeHtml('Users') ?></h1><br/>
+        <?php
+            $flash = $this->flashMessenger();
+            $flash->setMessageOpenFormat('<div%s>
+                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                             &times;
+                         </button>
+                         <ul><li>')
+                ->setMessageSeparatorString('</li><li>')
+                ->setMessageCloseString('</li></ul></div>');
 
+            echo $flash->render('error',   array('alert', 'alert-dismissible', 'alert-danger'));
+            echo $flash->render('info',    array('alert', 'alert-dismissible', 'alert-info'));
+            echo $flash->render('default', array('alert', 'alert-dismissible', 'alert-warning'));
+            echo $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
+        ?>
         <table id="userTable" class="table table-striped table-hover table-bordered">
             <tbody>
 
                 <tr>
-                    <th>
-                        #
-                    </th>
-                    <th>
-                        Full name
-                    </th>
-                    <th>
-                        Email
-                    </th>
-                    <th>
-                        Username
-                    </th>
-                    <th>
-                        Options
-                    </th>
+                    <th>#</th>
+                    <th>Full name</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Options</th>
                 </tr>
-
-                <?php foreach($users as $user): ?>
+                <?php if(count($users) > 0): ?>
+                    <?php foreach($users as $user): ?>
+                        <tr>
+                            <td></td>
+                            <td><?= $user->getUserFullName() ?></td>
+                            <td><?= $user->getUserEmail() ?></td>
+                            <td><?= $user->getUserName() ?></td>
+                            <td>
+                                <a href="<?php echo $this->url('admin/default', array('controller' => 'index', 'action' => 'user-edit', 'id' => $user->getId())); ?>"><span class="glyphicon glyphicon-edit"></span></a>&nbsp;
+                                <?php if($user->getId() != $this->identity()->getId()): ?>
+                                    <a href="<?php echo $this->url('admin/default', array('controller' => 'index', 'action' => 'user-delete', 'id' => $user->getId())); ?>"><span class="glyphicon glyphicon-trash"></span></a>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <? endforeach ?>
+                <?php else: ?>
                     <tr>
-                        <td>
-
-                        </td>
-                        <td>
-                            <?= $user->getUserFullName() ?>
-                        </td>
-                        <td>
-                            <?= $user->getUserEmail() ?>
-                        </td>
-                        <td>
-                            <?= $user->getUserName() ?>
-                        </td>
-                        <td>
-                            <a href="#"><span class="glyphicon glyphicon-edit"></span></a>&nbsp;
-                            <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
-                        </td>
+                        <td>Users table is empty...</td><td></td><td></td><td></td><td></td>
                     </tr>
-                <? endforeach ?>
+                <?php endif; ?>
 
             </tbody>
         </table>
