@@ -7,7 +7,7 @@ use Zend\Form\Annotation;
 
 /**
  * Posts
- *
+ * @ORM\Entity
  * @ORM\Table(name="posts")
  * @Annotation\Name("posts")
  */
