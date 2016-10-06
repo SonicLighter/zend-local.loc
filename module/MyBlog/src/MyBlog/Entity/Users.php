@@ -77,6 +77,35 @@ class Users
     private $userFullName;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="user_role", type="string", length=100, nullable=false)
+     * @Annotation\Filter({"name":"StringTrim"})
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Attributes({"type":"text", "class":"form-control", "required":"required"})
+     * @Annotation\Required({"required":"true"})
+     * @Annotation\Options({"label":"Роль:"})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":1, "max":30}})
+     */
+    private $userRole;
+
+    /**
+     * @return string
+     */
+    public function getUserRole()
+    {
+        return $this->userRole;
+    }
+
+    /**
+     * @param string $userRole
+     */
+    public function setUserRole($userRole)
+    {
+        $this->userRole = $userRole;
+    }
+
+    /**
      * @return string
      */
     public function getUserFullName()

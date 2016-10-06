@@ -15,7 +15,6 @@ use Zend\View\Model\ViewModel;
 use AuthDoctrine\Form\LoginForm;
 use Zend\Session\SessionManager;
 use AuthDoctrine\Form\RegistrationFilter;
-
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Stdlib\Hydrator\DoctrineEntity;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
@@ -101,13 +100,13 @@ class IndexController extends AdminController{
 
     }
 
-    public function prepareFormData($user){
+    public function prepareFormData(Users $user){
 
         return array('user_name' => $user->getUserName(), 'user_email' => $user->getUserEmail(), 'user_fullname' => $user->getUserFullName());
 
     }
 
-    public function prepareData($user, $data){
+    public function prepareData(Users $user, $data){
 
         $user->setUserName($data['user_name']);
         $user->setUserEmail($data['user_email']);
