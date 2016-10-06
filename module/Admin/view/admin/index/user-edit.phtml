@@ -1,4 +1,6 @@
 <?php echo $this->headLink()->appendStylesheet('/css/login.css'); ?>
+<?php echo $this->headScript()->prependFile('/js/user-edit.js'); ?>
+<!--<script src="../../../../../public/js/user-edit.js"></script>-->
 <?php $this->headTitle('AdminCenter') ?>
 <div class="container">
     <div class="row">
@@ -28,7 +30,16 @@
             <?= $this->formRow($form->get('user_name')) ?><br/>
             <?= $this->formRow($form->get('user_email')) ?><br/>
             <?= $this->formRow($form->get('user_fullname')) ?>
+            <?= $this->formRow($form->get('role')) ?>
             <div class="errorMessage"><?php //echo (!empty($this->message))?($this->message):(''); ?><br/></div>
+            <select class="form-control" id="selectRole">
+                <option><?php echo $this->user->getUserRole(); ?></option>
+                <?php foreach($this->acl->getRolesArray() as $role): ?>
+                    <?php if($role != $this->user->getUserRole()): ?>
+                        <option><?php echo $role; ?></option>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </select><br/>
             <?= $this->formSubmit($form->get('submit')) ?>
             <?= $this->form()->closeTag() ?>
         </div>

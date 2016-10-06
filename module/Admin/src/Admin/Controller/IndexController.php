@@ -19,6 +19,7 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Stdlib\Hydrator\DoctrineEntity;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
 use Application\Controller\AdminController;
+use Application\Models\AclAccess;
 
 class IndexController extends AdminController{
 
@@ -96,13 +97,15 @@ class IndexController extends AdminController{
 
         return new ViewModel(array(
             'form' => $form,
+            'acl' => new AclAccess(),
+            'user' => $user,
         ));
 
     }
 
     public function prepareFormData(Users $user){
 
-        return array('user_name' => $user->getUserName(), 'user_email' => $user->getUserEmail(), 'user_fullname' => $user->getUserFullName());
+        return array('user_name' => $user->getUserName(), 'user_email' => $user->getUserEmail(), 'user_fullname' => $user->getUserFullName(), 'role' => $user->getUserRole());
 
     }
 
@@ -111,6 +114,7 @@ class IndexController extends AdminController{
         $user->setUserName($data['user_name']);
         $user->setUserEmail($data['user_email']);
         $user->setUserFullName($data['user_fullname']);
+        $user->setUserRole($data['role']);
 
         return $user;
 

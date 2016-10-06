@@ -3,6 +3,7 @@
 namespace Admin\Form;
 
 use Zend\Form\Form;
+use Zend\Form\Element;
 
 class UserEditForm extends Form
 {
@@ -42,7 +43,20 @@ class UserEditForm extends Form
             'attributes' => array(
                 'type'  => 'text',
                 'class' => 'form-control',
-                'placeholder' => 'Enter your full name',
+                'placeholder' => 'Enter full name',
+            ),
+            'options' => array(
+                'label' => '',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'role',
+            'attributes' => array(
+                'id' => 'userRole',
+                'type'  => 'hidden',
+                'class' => 'form-control',
+                'placeholder' => 'Enter role',
             ),
             'options' => array(
                 'label' => '',

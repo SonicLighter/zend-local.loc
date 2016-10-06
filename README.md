@@ -175,3 +175,6 @@ Edit array in config/application.config.php, add:
 > ./vendor/bin/doctrine-module orm:info - to get info about Entities
 > ./vendor/bin/doctrine-module orm:schema-tool:update --force - to update database
 > ./vendor/bin/doctrine-module orm:validate-schema - check validation
+
+5. Open Database.sql and execute SQL code to add admin.
+To get access to admin panel, you should use username: admin, password: admin123
