@@ -1,0 +1,43 @@
+<!-- <script src="//cdn.tinymce.com/4/tinymce.min.js"></script> -->
+<?php echo $this->headScript()->prependFile('/js/tinymce/tinymce.min.js'); ?>
+<script>tinymce.init({ selector:'textarea' });</script>
+<?php echo $this->headLink()->appendStylesheet('/css/login.css'); ?>
+<?php $this->headTitle('Update post') ?>
+<div class="container">
+    <div class="row">
+
+        <h3><?= $this->escapeHtml('Update post') ?></h3>
+
+        <?php $this->form->prepare(); ?>
+        <div class="loginBlock">
+
+            <?php
+            $flash = $this->flashMessenger();
+            $flash->setMessageOpenFormat('<div%s>
+                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                         &times;
+                     </button>
+                     <ul><li>')
+                ->setMessageSeparatorString('</li><li>')
+                ->setMessageCloseString('</li></ul></div>');
+
+            echo $flash->render('error',   array('alert', 'alert-dismissible', 'alert-danger'));
+            echo $flash->render('info',    array('alert', 'alert-dismissible', 'alert-info'));
+            echo $flash->render('default', array('alert', 'alert-dismissible', 'alert-warning'));
+            echo $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
+            ?>
+
+            <?= $this->form()->openTag($this->form) ?>
+            <?= $this->formRow($form->get('title')) ?>
+        </div>
+        <div class="createPost">
+            <?= $this->formTextarea($form->get('text')) ?>
+        </div>
+        <div class="loginBlock">
+            <div class="errorMessage"><?php //echo (!empty($this->message))?($this->message):(''); ?></div>
+            <?= $this->formSubmit($form->get('submit')) ?>
+            <?= $this->form()->closeTag() ?>
+        </div>
+
+    </div>
+</div>

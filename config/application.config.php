@@ -16,6 +16,7 @@ return array(
         'AuthDoctrine',
         'ZfSimpleMigrations',
         'Admin',
+        'Posts',
     ),
     'module_listener_options' => array(
         'module_paths' => array(

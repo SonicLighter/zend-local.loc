@@ -38,7 +38,7 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
+                        <li><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <?php if(empty($this->identity())): ?>
@@ -50,6 +50,9 @@
                                 <ul class="dropdown-menu">
                                     <?php if($this->identity()->getUserRole() == 'admin'): ?>
                                         <li><a href="<?php echo $this->url('admin/default', array('controller' => 'index', 'action' => 'index')) ?>">AdminPanel</a></li>
+                                    <?php endif; ?>
+                                    <?php if($this->identity()->getUserRole() == 'admin' || $this->identity()->getUserRole() == 'manager'): ?>
+                                        <li><a href="<?php echo $this->url('posts/default', array('controller' => 'index', 'action' => 'create-post')) ?>">Create post</a></li>
                                     <?php endif; ?>
                                     <li><a href="<?php echo $this->url('auth-doctrine/default', array('controller' => 'index', 'action' => 'logout')) ?>">Logout</a></li>
                                     <!--<li role="separator" class="divider"></li>-->

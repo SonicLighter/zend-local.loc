@@ -10,3 +10,8 @@
 .errorMessage{
     color: red;
 }
+
+.createPost{
+    margin-top: 20px;
+    width: 60%;
+}
