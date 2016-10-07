@@ -4,6 +4,7 @@ namespace MyBlog\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
+use MyBlog\Entity\Users;
 
 /**
  * Posts

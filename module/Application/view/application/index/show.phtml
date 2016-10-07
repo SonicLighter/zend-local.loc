@@ -38,9 +38,7 @@
                     <div class="postBottom_left">
                         <?php echo key($post).': '.$post[key($post)]->getCreated(); ?>
                     </div>
-                    <div class="postHeader_right">
-                        <a href="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'show', 'id' => $post[key($post)]->getId())); ?>"> read more </a>
-                    </div>
+                    <div class="postHeader_right"></div>
                 </div>
             </div>
         <?php endforeach; ?>
