@@ -1,4 +1,8 @@
 <?php echo $this->headLink()->appendStylesheet('/css/login.css'); ?>
+<?php //echo $this->headLink()->appendStylesheet('/js/tinyslider2/style.css'); ?>
+<?php //echo $this->headScript()->prependFile('/js/tinyslider2/script.js'); ?>
+<?php echo $this->headLink()->appendStylesheet('/js/picture-slider/style.css'); ?>
+<?php echo $this->headScript()->prependFile('/js/picture-slider/script.js'); ?>
 <div class="row">
     <br/>
     <div class="col-md-8">
@@ -33,6 +37,36 @@
                     <?php endif; endif; ?>
                 </div>
                 <div class="panel-body">
+
+                <!--<div id="wrapperPicture">
+                    <div id="containerPicture">
+                        <div class="sliderbutton" id="slideleft" onclick="slideshow.move(-1)"></div>
+                        <div id="slider">
+                            <ul>
+                                <li><img src="/js/tinyslider2/photos/1.jpg" width="558" height="235" alt="Image One" /></li>
+                                <li><img src="/js/tinyslider2/photos/2.jpg" width="558" height="235" alt="Image Two" /></li>
+                                <li><img src="/js/tinyslider2/photos/3.jpg" width="558" height="235" alt="Image Three" /></li>
+                                <li><img src="/js/tinyslider2/photos/4.jpg" width="558" height="235" alt="Image Four" /></li>
+                            </ul>
+                        </div>
+                        <div class="sliderbutton" id="slideright" onclick="slideshow.move(1)"></div>
+                        <ul id="pagination" class="pagination">
+                            <li onclick="slideshow.pos(0)"></li>
+                            <li onclick="slideshow.pos(1)"></li>
+                            <li onclick="slideshow.pos(2)"></li>
+                            <li onclick="slideshow.pos(3)"></li>
+                        </ul><br/>
+                    </div>
+                </div>-->
+                    <?php if($this->identity()): ?>
+                        <div class="slider">
+                            <ul>
+                                <li><img src="/img/tests/1.jpg" alt="" width="800px"></li>
+                                <li><img src="/img/tests/2.jpg" alt="" width="800px"></li>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+
                     <?php echo $post[key($post)]->getText(); ?>
                     <hr/>
                     <div class="postBottom_left">
@@ -58,3 +92,19 @@
         </div>
     </div>
 </div>
+
+<!-- <script type="text/javascript">
+    var slideshow=new TINY.slider.slide('slideshow',{
+        id:'slider',
+        auto:4,
+        resume:false,
+        vertical:false,
+        navid:'pagination',
+        activeclass:'current',
+        position:0,
+        rewind:false,
+        elastic:true,
+        left:'slideleft',
+        right:'slideright'
+    });
+</script> -->
