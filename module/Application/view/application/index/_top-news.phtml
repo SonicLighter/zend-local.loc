@@ -27,3 +27,14 @@
         <?php endforeach; ?>
     </div>
 </div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Users Online (<?php echo count($this->usersOnline); ?>)</h3>
+    </div>
+    <div class="panel-body">
+        <?php foreach($this->usersOnline as $id => $userOnline): ?>
+        <span class="glyphicon glyphicon-user"></span>&nbsp;<?php echo $userOnline['userName']; ?><div class="fullTime">&nbsp;(<?php echo $userOnline['fullTime']; ?>)</div>&nbsp;
+        <?php endforeach; ?>
+    </div>
+</div>

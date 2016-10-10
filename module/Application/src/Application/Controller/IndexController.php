@@ -13,6 +13,7 @@ use Application\Form\CommentFilter;
 use Application\Form\CommentForm;
 use Application\Models\AclAccess;
 use MyBlog\Entity\Comments;
+use MyBlog\Entity\Online;
 use MyBlog\Entity\Posts;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -37,6 +38,7 @@ class IndexController extends BaseController
             'top' => $top,
             'acl' => new AclAccess(),
             'popularPosts' => Likes::getPopularPosts($em),
+            'usersOnline' => Online::getOnline($em),
         ));
     }
 
@@ -75,6 +77,7 @@ class IndexController extends BaseController
             'commentForm' => $commentForm,
             'comments' => Comments::getPostComments($em, $this->params('id')),
             'popularPosts' => Likes::getPopularPosts($em),
+            'usersOnline' => Online::getOnline($em),
         ));
 
     }
