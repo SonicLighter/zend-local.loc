@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><?php echo $this->translate('5 latest news') ?></h3>
+    </div>
+    <div class="panel-body">
+        <?php foreach($this->top as $top): ?>
+            <a href="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'show', 'id' => $top->getId())); ?>"><?php echo $top->getTitle(); ?></a> /
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Popular posts</h3>
+    </div>
+    <div class="panel-body">
+        <?php foreach($this->popularPosts as $id => $post): ?>
+            Title: <a href="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'show', 'id' => $post['id'])); ?>"><?php echo $post['title']; ?></a><br/>
+            Description: <br/><?php echo $post['text']; ?><br/>
+            <div class="postBottom_left">
+                <?php echo $post['created']; ?>
+            </div>
+            <div class="postHeader_right">
+                <div class="addLike"><span class="glyphicon glyphicon-heart"></span>&nbsp;<?php echo $post['likes']; ?></div>
+            </div>
+            <hr/>
+        <?php endforeach; ?>
+    </div>
+</div>

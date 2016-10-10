@@ -3,6 +3,7 @@
 namespace MyBlog\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use DoctrineORMModule\Options\EntityManager;
 use Zend\Form\Annotation;
 use MyBlog\Entity\Users;
 

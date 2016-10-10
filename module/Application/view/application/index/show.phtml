@@ -3,6 +3,9 @@
 <?php //echo $this->headScript()->prependFile('/js/tinyslider2/script.js'); ?>
 <?php echo $this->headLink()->appendStylesheet('/js/picture-slider/style.css'); ?>
 <?php echo $this->headScript()->prependFile('/js/picture-slider/script.js'); ?>
+<?php echo $this->headScript()->prependFile('/js/likes.js'); ?>
+<?php echo $this->headScript()->prependFile('/js/tinymce/tinymce.min.js'); ?>
+<script>tinymce.init({ selector:'textarea' });</script>
 <div class="row">
     <br/>
     <div class="col-md-8">
@@ -38,26 +41,6 @@
                 </div>
                 <div class="panel-body">
 
-                <!--<div id="wrapperPicture">
-                    <div id="containerPicture">
-                        <div class="sliderbutton" id="slideleft" onclick="slideshow.move(-1)"></div>
-                        <div id="slider">
-                            <ul>
-                                <li><img src="/js/tinyslider2/photos/1.jpg" width="558" height="235" alt="Image One" /></li>
-                                <li><img src="/js/tinyslider2/photos/2.jpg" width="558" height="235" alt="Image Two" /></li>
-                                <li><img src="/js/tinyslider2/photos/3.jpg" width="558" height="235" alt="Image Three" /></li>
-                                <li><img src="/js/tinyslider2/photos/4.jpg" width="558" height="235" alt="Image Four" /></li>
-                            </ul>
-                        </div>
-                        <div class="sliderbutton" id="slideright" onclick="slideshow.move(1)"></div>
-                        <ul id="pagination" class="pagination">
-                            <li onclick="slideshow.pos(0)"></li>
-                            <li onclick="slideshow.pos(1)"></li>
-                            <li onclick="slideshow.pos(2)"></li>
-                            <li onclick="slideshow.pos(3)"></li>
-                        </ul><br/>
-                    </div>
-                </div>-->
                     <?php if($this->identity()): ?>
                         <div class="slider">
                             <ul>
@@ -72,24 +55,56 @@
                     <div class="postBottom_left">
                         <?php echo key($post).': '.$post[key($post)]->getCreated(); ?>
                     </div>
-                    <div class="postHeader_right"></div>
+                    <div class="postHeader_right">
+                        <?php if($this->identity()): ?>
+                            <div class="addLike"><span class="glyphicon glyphicon-heart"></span>&nbsp;<?php echo $this->likes; ?></div>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         <?php endforeach; ?>
 
+        <?php if($this->identity()): ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Leave comment:
+                </div>
+                <div class="panel-body">
+                    <?php $this->commentForm->prepare(); ?>
+                    <?= $this->form()->openTag($this->commentForm) ?>
+                    <?= $this->formTextarea($this->commentForm->get('text')) ?><br/>
+                    <?= $this->formSubmit($this->commentForm->get('submit')) ?>
+                    <?= $this->form()->closeTag() ?>
+                </div>
+            </div>
+
+            <?php if($this->comments): ?>
+                <?php foreach($this->comments as $id => $comment): ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <?php echo $comment['userName']; ?>
+                        </div>
+                        <div class="panel-body">
+                            <?php echo $comment['text'] ?>
+                            <hr/>
+                            <div class="postBottom_left">
+                                <?php echo $comment['userName'].': '.$comment['created']; ?>
+                            </div>
+                            <div class="postHeader_right"></div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+        <?php endif; ?>
+
     </div>
 
     <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('5 latest news') ?></h3>
-            </div>
-            <div class="panel-body">
-                <?php foreach($this->top as $top): ?>
-                    <a href="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'show', 'id' => $top->getId())); ?>"><?php echo $top->getTitle(); ?></a> /
-                <?php endforeach; ?>
-            </div>
-        </div>
+        <?php echo $this->partial('_top-news.phtml', array(
+            'top' => $this->top,
+            'popularPosts' => $this->popularPosts,
+        )); ?>
     </div>
 </div>
 

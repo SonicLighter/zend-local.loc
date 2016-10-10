@@ -30,3 +30,8 @@
     font-size: 13px;
     color: #9d9d9d;
 }
+
+.addLike{
+    cursor: hand;
+    color: #2b669a;
+}

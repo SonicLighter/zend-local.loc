@@ -9,10 +9,14 @@
 
 namespace Application\Controller;
 
+use Application\Form\CommentFilter;
+use Application\Form\CommentForm;
 use Application\Models\AclAccess;
+use MyBlog\Entity\Comments;
 use MyBlog\Entity\Posts;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use MyBlog\Entity\Likes;
 
 class IndexController extends BaseController
 {
@@ -32,6 +36,7 @@ class IndexController extends BaseController
             'posts' => $posts,
             'top' => $top,
             'acl' => new AclAccess(),
+            'popularPosts' => Likes::getPopularPosts($em),
         ));
     }
 
@@ -48,15 +53,40 @@ class IndexController extends BaseController
         }
 
         $posts = $this->getPostsArray($posts);
-
         $query = $em->createQuery('SELECT p FROM MyBlog\Entity\Posts p ORDER BY p.id DESC')->setMaxResults(5);
         $top = $query->getResult();
 
+        $commentForm = new CommentForm();
+        $request = $this->getRequest();
+        if($request->isPost()) {
+            $commentForm->setData($request->getPost());
+            $commentForm->setInputFilter(new CommentFilter($this->getServiceLocator()));
+            if($commentForm->isValid()){
+                Comments::addComment($em, $this->params('id'), $this->identity()->getId(), $commentForm->getData());
+                $commentForm->setData(array('text' => ''));
+            }
+        }
+
+        //$commentsArray = Comments::getPostComments($em, $this->params('id'));
         return new ViewModel(array(
             'posts' => $posts,
             'top' => $top,
             'acl' => new AclAccess(),
+            'likes' => count(Likes::getPostLikes($em, $this->params('id'))),
+            'commentForm' => $commentForm,
+            'comments' => Comments::getPostComments($em, $this->params('id')),
+            'popularPosts' => Likes::getPopularPosts($em),
+            //'comments' => (count($commentsArray) > 0)?($commentsArray):(''),
         ));
+
+    }
+
+    public function setLikeAction(){
+
+        Likes::setLike($this->getEntityManager(), $this->identity()->getId(), $this->params('id'));
+        echo count(Likes::getPostLikes($this->getEntityManager(), $this->params('id')));
+        return $this->getResponse();
+
     }
 
     public function getPostsArray($posts){
