@@ -67,7 +67,6 @@ class IndexController extends BaseController
             }
         }
 
-        //$commentsArray = Comments::getPostComments($em, $this->params('id'));
         return new ViewModel(array(
             'posts' => $posts,
             'top' => $top,
@@ -76,7 +75,6 @@ class IndexController extends BaseController
             'commentForm' => $commentForm,
             'comments' => Comments::getPostComments($em, $this->params('id')),
             'popularPosts' => Likes::getPopularPosts($em),
-            //'comments' => (count($commentsArray) > 0)?($commentsArray):(''),
         ));
 
     }
