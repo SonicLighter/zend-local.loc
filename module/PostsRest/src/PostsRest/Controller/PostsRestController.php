@@ -107,19 +107,21 @@ class PostsRestController extends AbstractRestfulController
     public function update($id, $data)
     {
         $request = $this->getRequest();
-        echo $request->getContent();
-        die();
         if($request->isPut()){
+            $requestArray = json_decode($request->getContent(), true);
             $form = new PostsForm();
             $form->setInputFilter(new PostsFilter($this->getServiceLocator()));
-            $form->setData($data);
-            print_r($form->getData());
-            die();
+            $form->setData($requestArray);
             if($form->isValid()){
-                Posts::updatePost($this->em, $id, $form->getData());
-                return array(
-                    'server' => 'Post successfully updated!'
-                );
+                if(Posts::updatePost($this->em, $id, $form->getData())) {
+                    return array(
+                        'server' => 'Post successfully updated!'
+                    );
+                } else {
+                    return array(
+                        'server' => 'Incorrect ID parameter given!'
+                    );
+                }
             }
         }
         return array('server' => 'Error, missed parameters!');
@@ -127,7 +129,14 @@ class PostsRestController extends AbstractRestfulController
 
     public function delete($id)
     {
-        return array('data' => 'delete');
+        if(Posts::deletePost($this->em, $id)){
+            return array(
+                'server' => 'Post successfully deleted!'
+            );
+        }
+        return array(
+            'server' => 'Incorrect ID parameter given!'
+        );
     }
 
     public function authorization($username, $password)

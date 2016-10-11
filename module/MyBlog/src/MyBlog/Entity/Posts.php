@@ -154,11 +154,26 @@ class Posts
 
     public static function updatePost(EntityManager $em, $postId, $data)
     {
-        $post = Posts::getPostById($postId);
-        $post->setTitle($data['title']);
-        $post->setText($data['text']);
-        $em->persist($post);
-        $em->flush();
+        $post = Posts::getPostById($em, $postId);
+        if($post) {
+            $post->setTitle($data['title']);
+            $post->setText($data['text']);
+            $em->persist($post);
+            $em->flush();
+            return true;
+        }
+        return false;
+    }
+
+    public static function deletePost(EntityManager $em, $postId)
+    {
+        $post = Posts::getPostById($em, $postId);
+        if($post){
+            $em->remove($post);
+            $em->flush();
+            return true;
+        }
+        return false;
     }
 
 }
