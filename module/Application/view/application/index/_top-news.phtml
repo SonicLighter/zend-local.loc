@@ -1,10 +1,10 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title"><?php echo $this->translate('5 latest news') ?></h3>
+        <h3 class="panel-title">Users Online (<?php echo count($this->usersOnline); ?>)</h3>
     </div>
     <div class="panel-body">
-        <?php foreach($this->top as $top): ?>
-            <a href="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'show', 'id' => $top->getId())); ?>"><?php echo $top->getTitle(); ?></a> /
+        <?php foreach($this->usersOnline as $id => $userOnline): ?>
+            <span class="glyphicon glyphicon-user"></span>&nbsp;<?php echo $userOnline['userName']; ?><div class="fullTime">&nbsp;(<?php echo $userOnline['fullTime']; ?>h)</div>&nbsp;
         <?php endforeach; ?>
     </div>
 </div>
@@ -30,11 +30,11 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Users Online (<?php echo count($this->usersOnline); ?>)</h3>
+        <h3 class="panel-title"><?php echo $this->translate('5 latest news') ?></h3>
     </div>
     <div class="panel-body">
-        <?php foreach($this->usersOnline as $id => $userOnline): ?>
-        <span class="glyphicon glyphicon-user"></span>&nbsp;<?php echo $userOnline['userName']; ?><div class="fullTime">&nbsp;(<?php echo $userOnline['fullTime']; ?>)</div>&nbsp;
+        <?php foreach($this->top as $top): ?>
+            <a href="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'show', 'id' => $top->getId())); ?>"><?php echo $top->getTitle(); ?></a> /
         <?php endforeach; ?>
     </div>
 </div>

@@ -3,7 +3,7 @@
 namespace MyBlog\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use DoctrineORMModule\Options\EntityManager;
+use Doctrine\ORM\EntityManager;
 use Zend\Form\Annotation;
 use MyBlog\Entity\Users;
 
@@ -131,6 +131,34 @@ class Posts
     public function setCreated($created)
     {
         $this->created = $created;
+    }
+
+    public static function getPostById(EntityManager $em, $postId)
+    {
+        return $em->getRepository('MyBlog\Entity\Posts')->find($postId);
+    }
+
+    public static function addPost(EntityManager $em, $userId, $data)
+    {
+        $post = new Posts();
+        $post->setUserId($userId);
+        $post->setTitle($data['title']);
+        $post->setText($data['text']);
+        $post->setCreated(date("F j, Y, g:i a"));
+        $em->persist($post);
+        $em->flush();
+        $query = $em->createQuery("SELECT p FROM MyBlog\Entity\Posts p ORDER BY p.id DESC");
+        $posts = $query->getResult();
+        return $posts[0]->getId();
+    }
+
+    public static function updatePost(EntityManager $em, $postId, $data)
+    {
+        $post = Posts::getPostById($postId);
+        $post->setTitle($data['title']);
+        $post->setText($data['text']);
+        $em->persist($post);
+        $em->flush();
     }
 
 }

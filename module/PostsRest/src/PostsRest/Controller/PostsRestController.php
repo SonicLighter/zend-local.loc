@@ -8,10 +8,16 @@ use MyBlog\Entity\Posts;
 use Doctrine\ORM\EntityManager;
 use Application\Models\AclAccess;
 use Zend\Mvc\MvcEvent;
+use Posts\Form\PostsForm;
+use Posts\Form\PostsFilter;
 
 class PostsRestController extends AbstractRestfulController
 {
 
+    private $user;
+    private $em;
+
+    /*
     public function onDispatch(MvcEvent $e)
     {
         $routeMatch = $e->getRouteMatch();
@@ -24,37 +30,99 @@ class PostsRestController extends AbstractRestfulController
         }
     }
 
-    public function connect(){
-        return array('access-token' => 'dsaoijdoajisdjasdoasjid');
-    }
-
-    /*
-    public function getList()
+    public function connect()
     {
-
-        $request = $this->getRequest();
-        //if($request->isPost)
-        if($this->authorization('sergei', '123456')){
-
+        $requestData = $this->getRequest()->getPost();
+        $accessUser = $this->authorization($requestData['username'], $requestData['password']);
+        if($accessUser){
+            $accessToken = hash('sha256', $requestData['username'].date('Y-m-d'));
+            $aclAccess = new AclAccess();
+            if($aclAccess->isAllowed($accessUser[0]->getUserRole(), $aclAccess::NEWS)) {
+                return array('access-token' => $accessToken, 'access-id' => $accessUser[0]->getId());
+            }
         }
-
         return array('server' => 'Incorrect access data or you have no permissions to access this operation!');
     }
     */
 
+    public function onDispatch(MvcEvent $e)
+    {
+        $routeMatch = $e->getRouteMatch();
+        $action = $routeMatch->getParam('action', false);
+        $request = $this->getRequest();
+        if($request->getHeaders()->get('username') && $request->getHeaders()->get('password')) {
+            $this->user = $this->authorization($request->getHeaders()->get('username')->getFieldValue(), $request->getHeaders()->get('password')->getFieldValue());
+            if ($this->user) {
+                $aclAccess = new AclAccess();
+                if ($aclAccess->isAllowed($this->user->getUserRole(), $aclAccess::NEWS)) {
+                    return parent::onDispatch($e);
+                }
+            }
+        }
+        $errorArray = array('server' => 'Incorrect access data or you have no permissions to access this operation!');
+        $e->setResult($errorArray);
+        return $errorArray;
+    }
+
     public function get($id)
     {
-        return array('data' => 'get');
+        $post = Posts::getPostById($this->em, $id);
+        if(!$post){
+            $post = array(
+                'server' => 'No data found! Check your request or id parameter!'
+            );
+        }
+        else{
+            $post = array(
+                'id' => $post->getId(),
+                'userId' => $post->getUserId(),
+                'title' => $post->getTitle(),
+                'text' => $post->getText(),
+                'created' => $post->getCreated(),
+            );
+        }
+        return array('data' => $post);
     }
 
     public function create($data)
     {
-        return array('data' => 'post');
+        $request = $this->getRequest();
+        if($request->isPost()){
+            if(!empty($request->getPost()['title']) && !empty($request->getPost()['text'])){
+                $form = new PostsForm();
+                $form->setInputFilter(new PostsFilter($this->getServiceLocator()));
+                $form->setData($request->getPost());
+                if($form->isValid()){
+                    $newPostId = Posts::addPost($this->em, $this->user->getId(), $form->getData());
+                    return array(
+                        'server' => 'Post successfully published!',
+                        'post-id' => $newPostId,
+                    );
+                }
+            }
+        }
+        return array('server' => 'Error, missed parameters!');
     }
 
     public function update($id, $data)
     {
-        return array('data' => 'put');
+        $request = $this->getRequest();
+        echo $request->getContent();
+        die();
+        if($request->isPut()){
+            $form = new PostsForm();
+            $form->setInputFilter(new PostsFilter($this->getServiceLocator()));
+            $form->setData($data);
+            print_r($form->getData());
+            die();
+            if($form->isValid()){
+                Posts::updatePost($this->em, $id, $form->getData());
+                return array(
+                    'server' => 'Post successfully updated!'
+                );
+            }
+        }
+        return array('server' => 'Error, missed parameters!');
     }
 
     public function delete($id)
@@ -64,12 +132,12 @@ class PostsRestController extends AbstractRestfulController
 
     public function authorization($username, $password)
     {
-        $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        $user = $em->getRepository('MyBlog\Entity\Users')->findBy(array('userName' => $username, 'userPassword' => hash('sha256', $password)));
+        $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        $user = $this->em->getRepository('MyBlog\Entity\Users')->findBy(array('userName' => $username, 'userPassword' => hash('sha256', $password)));
         if(!$user){
             return false;
         }
-        return true;
+        return $user[0];
     }
 
 }
