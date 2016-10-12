@@ -1,3 +1,12 @@
+<?php if(!$this->identity()): ?>
+    <div class="panel panel-default">
+        <div id="vk_auth"></div>
+        <script type="text/javascript">
+            VK.Widgets.Auth("vk_auth", {width: "360px", authUrl: '/vk/index/login'});
+        </script>
+    </div>
+<?php endif; ?>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">Users Online (<?php echo count($this->usersOnline); ?>)</h3>

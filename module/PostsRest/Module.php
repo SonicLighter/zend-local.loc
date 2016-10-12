@@ -31,6 +31,9 @@ class Module
      */
     public function registerJsonStrategy(\Zend\Mvc\MvcEvent $e) {
         $matches    = $e->getRouteMatch();
+        if(empty($matches)){
+            return;
+        }
         $controller = $matches->getParam('controller');
         if (false === strpos($controller, __NAMESPACE__)) {
             // not a controller from this module

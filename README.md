@@ -178,3 +178,9 @@ Edit array in config/application.config.php, add:
 
 5. Open Database.sql and execute SQL code to add admin.
 To get access to admin panel, you should use username: admin, password: admin123
+
+API
+POST /posts-rest (HEADER - username & password) (BODY - title & text)
+GET /posts-rest/1 (HEADER - username & password) (1 - post ID)
+PUT /posts-rest/1 (HEADER - username & password) (row - json ({"title":"","text":""})
+DELETE /posts-rest/1 (HEADER - username & password)
