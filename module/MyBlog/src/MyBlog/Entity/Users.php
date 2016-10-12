@@ -4,6 +4,7 @@ namespace MyBlog\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Users
@@ -198,5 +199,23 @@ class Users
     public function getUserEmail()
     {
         return $this->userEmail;
+    }
+
+    public static function getUserByLogin(EntityManager $em, $userName)
+    {
+        return $em->getRepository('MyBlog\Entity\Users')->findBy(array('userName' => $userName));
+    }
+
+    public static function vkUserRegistration(EntityManager $em, $data)
+    {
+        $newUser = new Users();
+        $newUser->setUserName($data['uid']);
+        $newUser->setUserPassword(hash('sha256', $data['hash']));
+        $newUser->setUserEmail('vk'.$data['uid'].'@zend-local.loc');
+        $newUser->setUserFullName($data['first_name'].' '.$data['last_name']);
+        $newUser->setUserRole('user');
+        $em->persist($newUser);
+        $em->flush();
+        return Users::getUserByLogin($em, $data['uid']);
     }
 }
