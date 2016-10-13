@@ -1,6 +1,6 @@
 <?php
 
-namespace Vk\Controller;
+namespace Users\Controller;
 
 use Admin\Form\UserEditFilter;
 use Admin\Form\UserEditForm;
@@ -23,28 +23,13 @@ use DoctrineORMModule\Stdlib\Hydrator\DoctrineEntity;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
 use Application\Controller\PostsBaseController;
 use Application\Models\AclAccess;
-use Vk\Models\Vk;
 
 class IndexController extends BaseController
 {
-
-    public function indexAction()
+    public function showAction()
     {
-        return new ViewModel();
+        return new ViewModel(array(
+            'id' => $this->params('id'),
+        ));
     }
-
-    public function loginAction()
-    {
-        $request = $this->getRequest();
-        $getParams = $request->getQuery();
-        if(empty($getParams['uid']) || empty($getParams['first_name']) || empty($getParams['last_name']) || empty($getParams['photo']) || empty($getParams['photo_rec']) || empty($getParams['hash'])){
-            return $this->redirect()->toRoute('auth-doctrine/default', array('controller' => 'index', 'action' => 'login'));
-        }
-        $vk = new Vk($this->getEntityManager(), $getParams);
-        if(!$vk->login($this->getServiceLocator())){
-            return $this->redirect()->toRoute('auth-doctrine/default', array('controller' => 'index', 'action' => 'login'));
-        }
-        return $this->redirect()->toRoute('home');
-    }
-
 }

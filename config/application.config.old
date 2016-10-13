@@ -18,6 +18,7 @@ return array(
         'Admin',
         'Posts',
         'PostsRest',
+        'Vk',
     ),
     'module_listener_options' => array(
         'module_paths' => array(
