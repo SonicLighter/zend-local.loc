@@ -218,4 +218,9 @@ class Users
         $em->flush();
         return Users::getUserByLogin($em, $data['uid']);
     }
+
+    public static function getUserById(EntityManager $em, $id)
+    {
+        return $em->getRepository('MyBlog\Entity\Users')->find($id);
+    }
 }

@@ -7,6 +7,7 @@ use Admin\Form\UserEditForm;
 use AuthDoctrine\Form\LoginFilter;
 use AuthDoctrine\Form\RegistrationForm;
 use DoctrineORMModuleTest\Assets\GraphEntity\User;
+use MyBlog\Entity\Online;
 use MyBlog\Entity\Posts;
 use Posts\Form\PostsFilter;
 use Posts\Form\PostsForm;
@@ -28,8 +29,13 @@ class IndexController extends BaseController
 {
     public function showAction()
     {
-        return new ViewModel(array(
-            'id' => $this->params('id'),
-        ));
+        $user = Users::getUserById($this->getEntityManager(), $this->params('id'));
+        if(!$user){
+            return $this->redirect()->toRoute('home');
+        }
+        return array(
+            'user' => $user,
+            'fullTime' => round(Online::getFullTimeByUserId($this->getEntityManager(), $this->params('id'))[0]->getFullTime()/60/60),
+        );
     }
 }

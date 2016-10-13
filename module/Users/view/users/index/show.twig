@@ -1,0 +1,45 @@
+<link rel="stylesheet" type="text/css" href="/css/login.css">
+<div class="row">
+    <br/>
+
+    <div class="col-md-4">
+
+        <div class="panel panel-default">
+            <div class="panel-heading"></div>
+            <div class="panel-body">
+                <div class="userPicture">
+                    {% if user.getUserPicture() %}
+                        <img src="{{ user.getUserPicture() }}">
+                    {% else %}
+                        <img src="/img/no_avatar.png">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-8">
+
+        <div class="panel panel-default">
+            <div class="panel-heading"></div>
+            <div class="panel-body">
+                <div class='profile-right_item-username'>
+                    {{ user.getUserFullName() }}
+                </div>
+                <div class='profile-right_item-active'>
+                    {{ fullTime }} hours
+                </div>
+                <br/><hr/>
+                <div class='profile-right_item-info'>
+                    E-mail:
+                </div>
+                <div class='profile-right_item-infovalue'>
+                    {{ user.getUserEmail() }}
+                </div><br/>
+            </div>
+        </div>
+
+    </div>
+
+</div>

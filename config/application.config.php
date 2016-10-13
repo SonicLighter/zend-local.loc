@@ -14,7 +14,7 @@ return array(
         'ZFTool',
         'MyBlog',
         'AuthDoctrine',
-        'ZfSimpleMigrations',
+        //'ZfSimpleMigrations',
         'Admin',
         'Posts',
         'PostsRest',

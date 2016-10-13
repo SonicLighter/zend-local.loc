@@ -13,7 +13,7 @@
     </div>
     <div class="panel-body">
         <?php foreach($this->usersOnline as $id => $userOnline): ?>
-            <span class="glyphicon glyphicon-user"></span>&nbsp;<?php echo $userOnline['userName']; ?><div class="fullTime">&nbsp;(<?php echo $userOnline['fullTime']; ?>h)</div>&nbsp;
+            <span class="glyphicon glyphicon-user"></span>&nbsp;<a href="<?php echo $this->url('users/default', array('controller' => 'index', 'action' => 'show', 'id' => $userOnline['userId'])) ?>"><?php echo $userOnline['userName']; ?></a><div class="fullTime">&nbsp;(<?php echo $userOnline['fullTime']; ?>h)</div>&nbsp;
         <?php endforeach; ?>
     </div>
 </div>

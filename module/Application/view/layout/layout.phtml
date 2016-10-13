@@ -53,6 +53,7 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->translate('Hello').', '.$this->identity()->getUserFullName().' '; ?><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="<?php echo $this->url('users/default', array('controller' => 'index', 'action' => 'show', 'id' => $this->identity()->getId())) ?>">My Profile</a></li>
                                     <?php if($this->identity()->getUserRole() == 'admin'): ?>
                                         <li><a href="<?php echo $this->url('admin/default', array('controller' => 'index', 'action' => 'index')) ?>">AdminPanel</a></li>
                                     <?php endif; ?>

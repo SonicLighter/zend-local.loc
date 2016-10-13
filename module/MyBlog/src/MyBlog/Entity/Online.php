@@ -159,4 +159,9 @@ class Online
         return $usersOnline;
     }
 
+    public static function getFullTimeByUserId(EntityManager $em, $userId)
+    {
+        return $em->getRepository('MyBlog\Entity\Online')->findBy(array('userId' => $userId));
+    }
+
 }
