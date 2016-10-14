@@ -91,6 +91,29 @@ class Users
     private $userRole;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="created", type="string", length=255)
+     */
+    private $userPicture;
+
+    /**
+     * @return string
+     */
+    public function getUserPicture()
+    {
+        return $this->userPicture;
+    }
+
+    /**
+     * @param string $userPicture
+     */
+    public function setUserPicture($userPicture)
+    {
+        $this->userPicture = $userPicture;
+    }
+
+    /**
      * @return string
      */
     public function getUserRole()
@@ -214,6 +237,7 @@ class Users
         $newUser->setUserEmail('vk'.$data['uid'].'@zend-local.loc');
         $newUser->setUserFullName($data['first_name'].' '.$data['last_name']);
         $newUser->setUserRole('user');
+        $newUser->setUserPicture($data['photo']);
         $em->persist($newUser);
         $em->flush();
         return Users::getUserByLogin($em, $data['uid']);
